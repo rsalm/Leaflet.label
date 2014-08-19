@@ -1,0 +1,24 @@
+{
+  "name": "Leaflet.label",
+  "version": "0.2.1",
+  "homepage": "https://github.com/Leaflet/Leaflet.label",
+  "authors": [
+    "Jacob Toye <jacob.toye@gmail.com>"
+  ],
+  "description": "Labels for leaflet maps",
+  "main": "dist/leaflet.label.js",
+  "keywords": [
+    "leaflet",
+    "gis",
+    "map"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
