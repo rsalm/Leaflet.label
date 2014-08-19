@@ -24,7 +24,8 @@ L.Label = L.Class.extend({
 		noHide: false,
 		offset: [12, -15], // 6 (width of the label triangle) + 6 (padding)
 		opacity: 1,
-		zoomAnimation: true
+		zoomAnimation: true,
+        closeOnPopupOpen: false
 	},
 
 	initialize: function (options, source) {
@@ -35,7 +36,18 @@ L.Label = L.Class.extend({
 		this._isOpen = false;
 	},
 
-	onAdd: function (map) {
+    _closeAndPreventLabel: function (e) {
+        if (e.popup._source.label === this) {
+            this._preventLabel = true;
+            this.close();
+        }
+    },
+
+    _unpreventLabel: function () {
+        this._preventLabel = false;
+    },
+
+    onAdd: function (map) {
 		this._map = map;
 
 		this._pane = this.options.pane ? map._panes[this.options.pane] :
@@ -65,6 +77,11 @@ L.Label = L.Class.extend({
 			L.DomEvent.on(this._container, 'click', this.close, this);
 			map.on('click', this.close, this);
 		}
+
+        if (this.options.closeOnPopupOpen) {
+            map.on('popupopen', this._closeAndPreventLabel, this);
+            map.on('popupclose', this._unpreventLabel, this);
+        }
 	},
 
 	onRemove: function (map) {
@@ -268,7 +285,7 @@ L.Label = L.Class.extend({
 // This object is a mixin for L.Marker and L.CircleMarker. We declare it here as both need to include the contents.
 L.BaseMarkerMethods = {
 	showLabel: function () {
-		if (this.label && this._map) {
+		if (this.label && this._map && !this.label._preventLabel) {
 			this.label.setLatLng(this._latlng);
 			this._map.showLabel(this.label);
 		}
