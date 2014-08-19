@@ -1,7 +1,7 @@
 // This object is a mixin for L.Marker and L.CircleMarker. We declare it here as both need to include the contents.
 L.BaseMarkerMethods = {
 	showLabel: function () {
-		if (this.label && this._map) {
+		if (this.label && this._map && !this.label._preventLabel) {
 			this.label.setLatLng(this._latlng);
 			this._map.showLabel(this.label);
 		}
